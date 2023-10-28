@@ -1,14 +1,19 @@
-import React from "react";
-import { MyMenu } from "components/MyMenu";
-import { BrowserRouter } from "react-router-dom";
+import { Header } from "components/Header";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
+import { routes } from "routes/routes";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <MyMenu />
+        <Header />
+        <Routes>
+          {routes.map((item) => (
+            <Route element={item.element} path={item.path} key={item.id} />
+          ))}
+        </Routes>
       </BrowserRouter>
     </div>
   );
