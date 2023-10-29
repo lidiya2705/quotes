@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IQuote, rootStore } from "store/rootStore";
 import SelectBox from "devextreme-react/select-box";
 import DataGrid, {
@@ -11,10 +11,16 @@ import DataGrid, {
 } from "devextreme-react/data-grid";
 import { Button } from "devextreme-react/button";
 import s from "./Quotes.module.css";
-import "./quotes.css";
+import { GoToButtons } from "components/GoToButtons";
 
 export const Quotes: React.FC = observer(() => {
   const [pageNum, setPageNum] = useState<number>(0);
+
+  useEffect(() => {
+    return () => {
+      rootStore.setSelectedAuthor(null);
+    };
+  }, []);
 
   const handlePageChange = (value: number) => {
     setPageNum(value);
@@ -79,6 +85,13 @@ export const Quotes: React.FC = observer(() => {
           width="250px"
         />
       </DataGrid>
+      {rootStore.filteredQuotes.length > 10 && (
+        <GoToButtons
+          pageNum={pageNum}
+          setPageNum={setPageNum}
+          quotes={rootStore.filteredQuotes}
+        />
+      )}
     </div>
   );
 });

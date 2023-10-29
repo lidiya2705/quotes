@@ -13,7 +13,7 @@ function App() {
     const favoriteAsString = localStorage.getItem("favorite");
     favoriteAsString &&
       rootStore.setFavoriteQuoteIds(JSON.parse(favoriteAsString));
-  }, []); //eslint-disable-line
+  }, []);
 
   return (
     <div className="App">

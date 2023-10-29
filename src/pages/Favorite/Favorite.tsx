@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IQuote, rootStore } from "store/rootStore";
 import SelectBox from "devextreme-react/select-box";
 import DataGrid, {
@@ -11,9 +11,16 @@ import DataGrid, {
 import { observer } from "mobx-react-lite";
 import s from "./Favorite.module.css";
 import Button from "devextreme-react/button";
+import { GoToButtons } from "components/GoToButtons";
 
 export const Favorite: React.FC = observer(() => {
   const [pageNum, setPageNum] = useState<number>(0);
+
+  useEffect(() => {
+    return () => {
+      rootStore.setSelectedAuthor(null);
+    };
+  }, []);
 
   const handlePageChange = (value: number) => {
     setPageNum(value);
@@ -51,7 +58,7 @@ export const Favorite: React.FC = observer(() => {
           </Item>
           <Item location="after">
             <SelectBox
-              items={rootStore.authors}
+              items={rootStore.favoriteAuthors}
               placeholder="Choose Author"
               showClearButton={true}
               onSelectionChanged={handleAuthorChange}
@@ -76,6 +83,13 @@ export const Favorite: React.FC = observer(() => {
           alignment="center"
         />
       </DataGrid>
+      {rootStore.favoriteQuotes.length > 10 && (
+        <GoToButtons
+          pageNum={pageNum}
+          setPageNum={setPageNum}
+          quotes={rootStore.favoriteQuotes}
+        />
+      )}
     </div>
   );
 });

@@ -1,0 +1,8 @@
+.goToButtons {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+.goToButtons > div:not(:first-child) {
+  margin-left: 10px;
+}

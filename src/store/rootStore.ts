@@ -7,7 +7,7 @@ export interface IQuote {
   quote: string;
 }
 
-type TQuotes = Array<IQuote>;
+export type TQuotes = Array<IQuote>;
 
 interface IQuotesResponse {
   quotes: TQuotes;
@@ -64,6 +64,14 @@ class RootStore {
 
   get authors() {
     const authors: string[] = this.quotes.map((quote: IQuote) => quote.author);
+    const uniqueAuthors = [...new Set(authors)];
+    return uniqueAuthors.sort();
+  }
+
+  get favoriteAuthors() {
+    const authors: string[] = this.favoriteQuotes.map(
+      (quote: IQuote) => quote.author
+    );
     const uniqueAuthors = [...new Set(authors)];
     return uniqueAuthors.sort();
   }
