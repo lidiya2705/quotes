@@ -1,7 +1,7 @@
 import { Favorite } from "pages/Favorite";
 import { Quotes } from "pages/Quotes";
 
-interface IRoute {
+export interface IRoute {
   id: number;
   name: string;
   path: string;

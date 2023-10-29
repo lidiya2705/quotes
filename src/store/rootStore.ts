@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
 
-interface IQuote {
+export interface IQuote {
   id: number;
   author: string;
   quote: string;
@@ -21,6 +21,7 @@ class RootStore {
   quotes: TQuotes = [];
   isLoading: boolean = false;
   selectedAuthor: string | null = null;
+  favoriteQuoteIds: number[] = [];
 
   setSelectedAuthor = (value: string | null) => {
     this.selectedAuthor = value;
@@ -28,6 +29,10 @@ class RootStore {
 
   setIsLoading(value: boolean) {
     this.isLoading = value;
+  }
+
+  setFavoriteQuoteIds(value: number[]) {
+    this.favoriteQuoteIds = value;
   }
 
   async loadQuotes() {
@@ -47,8 +52,14 @@ class RootStore {
     }
   }
 
-  clear() {
-    this.quotes = [];
+  toggleFaforite(id: number) {
+    if (this.favoriteQuoteIds.includes(id)) {
+      const newQuotes = this.favoriteQuoteIds.filter((i) => i !== id);
+      this.favoriteQuoteIds = newQuotes;
+    } else {
+      this.favoriteQuoteIds = [...this.favoriteQuoteIds, id];
+    }
+    localStorage.setItem("favorite", JSON.stringify(this.favoriteQuoteIds));
   }
 
   get authors() {
@@ -64,6 +75,16 @@ class RootStore {
       );
     }
     return this.quotes;
+  }
+
+  get favoriteQuotes() {
+    return this.filteredQuotes.filter((item) =>
+      this.favoriteQuoteIds.includes(item.id)
+    );
+  }
+
+  clear() {
+    this.quotes = [];
   }
 }
 

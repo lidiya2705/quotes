@@ -4,8 +4,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { routes } from "routes/routes";
 import { Main } from "components/Main/Main";
+import { useEffect } from "react";
+import { rootStore } from "store/rootStore";
 
 function App() {
+  useEffect(() => {
+    rootStore.loadQuotes();
+    const favoriteAsString = localStorage.getItem("favorite");
+    favoriteAsString &&
+      rootStore.setFavoriteQuoteIds(JSON.parse(favoriteAsString));
+  }, []); //eslint-disable-line
+
   return (
     <div className="App">
       <BrowserRouter>
